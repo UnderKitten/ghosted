@@ -17,9 +17,11 @@ export default function JobRow({
 }: Props) {
   return (
     <div
-      className={`w-full flex items-center gap-4 p-4 rounded-xl ${statusColors[job.status]}`}
+      className={`
+    w-full max-w-xs mx-auto md:max-w-none md:mx-0 md:flex items-center text-center md:text-start gap-4 p-4 rounded-xl ${statusColors[job.status]}
+  `}
     >
-      <div className=" min-w-0">
+      <div className=" min-w-20 flex-auto ">
         <p>{job.companyName}</p>
         <p className="text-sm text-gray-400 whites ">{job.roleTitle}</p>
       </div>
@@ -38,7 +40,7 @@ export default function JobRow({
         </select>
       </div>
 
-      <span className="text-gray-400 shrink-0 text-sm whitespace-nowrap">
+      <span className="text-gray-400 shrink-0 text-sm whitespace-nowrap mr-2">
         {new Date(job.createdAt).toLocaleDateString()}
       </span>
 
@@ -46,7 +48,7 @@ export default function JobRow({
         {new Date(job.updatedAt).toLocaleDateString()}
       </span>
 
-      <div className="flex gap-2 shrink-0">
+      <div className="flex flex-col md:flex-row gap-2 shrink-0">
         <button
           onClick={() => onView(job)}
           className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded"

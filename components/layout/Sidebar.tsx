@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const pathname = usePathname();
+  
   return (
     <>
       <div className="md:hidden p-4 border-b flex gap-3">
@@ -25,13 +27,13 @@ export default function Sidebar() {
         <h2 className="text-xl font-bold mb-6">Ghosted</h2>
 
         <nav className="flex flex-col gap-2 mt-[25vh]">
-          <Link href="/dashboard" className="p-2 rounded bg-gray-800">
+          <Link href="/dashboard" className={`p-2 rounded ${pathname === "/dashboard" ? "bg-gray-800" : "hover:bg-gray-800"}`}>
             Dashboard
           </Link>
-          <Link href="/jobs" className="p-2 rounded hover:bg-gray-800">
+          <Link href="/jobs" className={`p-2 rounded ${pathname === "/jobs" ? "bg-gray-800" : "hover:bg-gray-800"}`}>
             Jobs
           </Link>
-          <Link href="/contacts" className="p-2 rounded hover:bg-gray-800">
+          <Link href="/contacts" className={`p-2 rounded ${pathname === "/contacts" ? "bg-gray-800" : "hover:bg-gray-800"}`}>
             Contacts
           </Link>
         </nav>
