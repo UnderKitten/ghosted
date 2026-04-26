@@ -12,6 +12,8 @@ export type Job = {
   createdAt: string;
   updatedAt: string;
   status: JobStatus;
+  notes?: string;
+  jobLink?: string;
 };
 
 export const STATUS_OPTIONS: JobStatus[] = [

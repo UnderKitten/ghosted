@@ -6,6 +6,9 @@ type Props = {
   onEdit: (job: Job) => void;
   onView: (job: Job) => void;
   onStatusChange: (id: string, status: string) => void;
+  setMode: (mode: "add" | "edit") => void;
+  setSelectedJob: (job: Job | null) => void;
+  setIsModalOpen: (isOpen: boolean) => void;
 };
 
 export default function JobRow({
@@ -14,12 +17,18 @@ export default function JobRow({
   onEdit,
   onView,
   onStatusChange,
+  setMode,
+  setSelectedJob,
+  setIsModalOpen,
 }: Props) {
   return (
     <div
       className={`
-    w-full max-w-xs mx-auto md:max-w-none md:mx-0 md:flex items-center text-center md:text-start gap-4 p-4 rounded-xl ${statusColors[job.status]}
-  `}
+   w-full max-w-sm mx-auto md:max-w-none md:mx-0
+    flex flex-col gap-2
+    md:grid md:grid-cols-5 md:items-center md:gap-4
+    p-4 rounded-xl
+    ${statusColors[job.status]}`}
     >
       <div className=" min-w-20 flex-auto ">
         <p>{job.companyName}</p>
@@ -57,7 +66,11 @@ export default function JobRow({
         </button>
 
         <button
-          onClick={() => onEdit(job)}
+          onClick={() => {
+            setMode("edit");
+            setSelectedJob(job);
+            setIsModalOpen(true);
+          }}
           className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded"
         >
           Edit
