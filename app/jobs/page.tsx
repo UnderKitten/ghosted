@@ -50,6 +50,35 @@ export default function JobsPage() {
     console.log("view", job);
   };
 
+  const handleSave = (jobData: Partial<Job>) => {
+    if (mode === "add") {
+      const newJob: Job = {
+        id: crypto.randomUUID(),
+        roleTitle: jobData.roleTitle ?? "",
+        companyName: jobData.companyName ?? "",
+        jobLink: jobData.jobLink,
+        notes: jobData.notes,
+        status: "APPLIED",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setJobs((prev) => [...prev, newJob]);
+    } else {
+      setJobs((prev) =>
+        prev.map((j) =>
+          j.id === jobData.id
+            ? {
+                ...j,
+                ...jobData,
+                updatedAt: new Date().toISOString(),
+              }
+            : j,
+        ),
+      );
+    }
+    setIsModalOpen(false);
+  };
+
   const handleStatusChange = (id: string, status: string) => {
     console.log("status change", id, status);
   };
@@ -107,6 +136,7 @@ export default function JobsPage() {
       <JobFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
         mode={mode}
         job={selectedJob}
       />

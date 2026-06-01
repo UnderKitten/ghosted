@@ -1,13 +1,39 @@
 import { Job } from "@/types/job";
+import { useEffect, useState } from "react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (job: Partial<Job>) => Job | void;
   mode: "add" | "edit";
   job?: Job | null;
 };
 
-export default function JobFormModal({ isOpen, onClose, mode, job }: Props) {
+export default function JobFormModal({ isOpen, onClose, onSave, mode, job }: Props) {
+  const [id, setId] = useState("");
+  const [roleTitle, setRoleTitle] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [jobLink, setJobLink] = useState("");
+  const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    setId(job?.id ?? "");
+    setRoleTitle(job?.roleTitle ?? "");
+    setCompanyName(job?.companyName ?? "");
+    setJobLink(job?.jobLink ?? "");
+    setNotes(job?.notes ?? "");
+  }, [job, isOpen]);
+
+  const handleSave = () => {
+    onSave({
+      id: job?.id,
+      roleTitle,
+      companyName,
+      jobLink,
+      notes,
+    });
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -32,25 +58,29 @@ export default function JobFormModal({ isOpen, onClose, mode, job }: Props) {
 
         <div className="flex flex-col gap-3">
           <input
-            defaultValue={job?.roleTitle || ""}
+            defaultValue={roleTitle}
+            onChange={(e) => setRoleTitle(e.target.value)}
             placeholder="Role Title"
             className="border p-2 rounded"
           />
 
           <input
-            defaultValue={job?.companyName || ""}
+            defaultValue={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
             placeholder="Company"
             className="border p-2 rounded"
           />
 
           <input
-            defaultValue={job?.jobLink || ""}
+            defaultValue={jobLink}
+            onChange={(e) => setJobLink(e.target.value)}
             placeholder="Job Link"
             className="border p-2 rounded"
           />
 
           <textarea
-            defaultValue={job?.notes || ""}
+            defaultValue={notes}
+            onChange={(e) => setNotes(e.target.value)}
             placeholder="Notes"
             className="border p-2 rounded"
           />
@@ -61,7 +91,7 @@ export default function JobFormModal({ isOpen, onClose, mode, job }: Props) {
             Cancel
           </button>
 
-          <button className="px-4 py-2 bg-blue-600 text-white rounded">
+          <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded">
             Save
           </button>
         </div>
