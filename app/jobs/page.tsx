@@ -39,7 +39,7 @@ export default function JobsPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const handleDelete = (id: string) => {
-    console.log("delete", id);
+    setJobs((prev) => prev.filter((job) => job.id !== id));
   };
 
   const handleEdit = (job: Job) => {
