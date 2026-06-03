@@ -37,6 +37,7 @@ export default function JobsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [query, setQuery] = useState<string>("");
 
   const handleDelete = (id: string) => {
     setJobs((prev) => prev.filter((job) => job.id !== id));
@@ -83,6 +84,19 @@ export default function JobsPage() {
     console.log("status change", id, status);
   };
 
+  const filteredJobs = jobs.filter((job) => {
+    if (!query.trim()) return true;
+    const q = query.toLowerCase();
+    return (
+      job.companyName.toLowerCase().includes(q) ||
+      job.roleTitle.toLowerCase().includes(q)
+    );
+  });
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
   // useEffect(() => {
   //   fetch("/api/jobs")
   //     .then((res) => res.json())
@@ -94,8 +108,10 @@ export default function JobsPage() {
       <div className="w-full">
         <div className="mb-4 text-center flex flex-col md:flex-row items-center justify-between gap-4">
           <input
+            value={query}
             placeholder="Search jobs..."
             className="text-center md:w-1/3 px-3 py-2 rounded bg-gray-800"
+            onChange={handleSearch}
           />
           <button
             onClick={() => {
@@ -118,7 +134,7 @@ export default function JobsPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {jobs.map((job) => (
+          {filteredJobs.map((job) => (
             <JobRow
               key={job.id}
               job={job}
